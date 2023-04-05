@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  platformsqlserver:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "pa55w0rd!"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+  platformservice:
+    image: alexanderivashkin1402/platformservice
+    ports:
+      - "8080:80"
+    depends_on:
+      platformsqlserver:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_URLS: "http://+"
+      ASPNETCORE_ENVIRONMENT: Development
